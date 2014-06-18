@@ -12,6 +12,11 @@
     </target>
 
     <target name="pack" depends="build" description="Packing Classes into Jar">
+    	<delete>
+    		<fileset dir="${build.dir}">
+			    <include name="**/Test.class"/>
+			</fileset>
+    	</delete>
         <jar destfile="${basedir}/libJNumberField.jar"
              basedir="${build.dir}">
         </jar>
@@ -21,6 +26,7 @@
         <delete>
             <fileset dir="${build.dir}">
                 <include name="**/*.class"/>
+            	<includesfile name="libJNumberField.jar"/>
             </fileset>
         </delete>
     </target>
