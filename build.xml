@@ -12,11 +12,8 @@
     </target>
 
     <target name="pack" depends="build" description="Packing Classes into Jar">
-        <jar destfile="${basedir}/MouseBalance.jar"
+        <jar destfile="${basedir}/libJNumberField.jar"
              basedir="${build.dir}">
-             <manifest>
-                <attribute name="Main-Class" value="de.kitty.saremox.mousebalance.startup.Startup"/>
-             </manifest>
         </jar>
     </target>
     
