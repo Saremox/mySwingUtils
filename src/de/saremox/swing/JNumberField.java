@@ -24,6 +24,22 @@ public class JNumberField extends JTextField
 	{
 		return new NumberDocument();
 	}
+	
+	public int getValue()
+	{
+		if(getText().equals(""))
+		{
+			return 0;
+		}
+		try
+		{
+			return Integer.parseInt(getText());
+		}
+		catch(NumberFormatException e)
+		{
+			return -1;
+		}
+	}
 
 	static class NumberDocument extends PlainDocument
 	{
