@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<project name="JNumberField" basedir="." default="build">
+    <property name="src.dir" value="src"/>
+    <property name="build.dir" value="bin"/>
+
+
+    <target name="build" description="Compiling the Project JNumberfield">
+        <mkdir dir ="${build.dir}"/>
+        <javac includeantruntime="false" destdir="${build.dir}" source="1.7" target="1.7">
+            <src path="${src.dir}"/>
+        </javac> 
+    </target>
+
+    <target name="pack" depends="build" description="Packing Classes into Jar">
+        <jar destfile="${basedir}/MouseBalance.jar"
+             basedir="${build.dir}">
+             <manifest>
+                <attribute name="Main-Class" value="de.kitty.saremox.mousebalance.startup.Startup"/>
+             </manifest>
+        </jar>
+    </target>
+    
+    <target name="clean">
+        <delete>
+            <fileset dir="${build.dir}">
+                <include name="**/*.class"/>
+            </fileset>
+        </delete>
+    </target>
+</project>
