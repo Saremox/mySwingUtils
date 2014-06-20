@@ -7,6 +7,8 @@ import java.awt.Frame;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 import javax.swing.Box;
 import javax.swing.JButton;
@@ -48,7 +50,7 @@ public class JNumberDialog extends JDialog
 	 * @author Saremox <saremox@linux.com>
 	 *
 	 */
-	private class inputFieldListener implements DocumentListener
+	private class inputFieldListener implements DocumentListener, KeyListener
 	{
 		@Override
 		public void changedUpdate(DocumentEvent arg0)
@@ -66,6 +68,37 @@ public class JNumberDialog extends JDialog
 		public void removeUpdate(DocumentEvent arg0)
 		{
 			updateValues();
+		}
+
+		@Override
+		public void keyPressed(KeyEvent arg0)
+		{
+			checkForEnter(arg0);
+		}
+
+		@Override
+		public void keyReleased(KeyEvent arg0)
+		{
+			checkForEnter(arg0);
+		}
+
+		@Override
+		public void keyTyped(KeyEvent arg0)
+		{
+			checkForEnter(arg0);
+		}
+		
+		public void checkForEnter(KeyEvent e)
+		{
+			if(e.getKeyCode() == KeyEvent.VK_ENTER)
+			{
+				if (inputField.getValue() >= getMinInt()
+						&& inputField.getValue() <= getMaxInt())
+				{
+					setModal(false);
+					setVisible(false);
+				}
+			}
 		}
 
 	}
@@ -100,6 +133,7 @@ public class JNumberDialog extends JDialog
 
 	private boolean success;
 	private GridLayout myGridLayout;
+	private Component _parentComponent;
 
 	private static final long serialVersionUID = 2891341810952787988L;
 	
@@ -194,6 +228,7 @@ public class JNumberDialog extends JDialog
 		this.cancelButton.addActionListener(new cancelListener());
 		this.inputField.getDocument().addDocumentListener(
 				new inputFieldListener());
+		this.inputField.addKeyListener(new inputFieldListener());
 		this.minMsg.setHorizontalAlignment(JLabel.RIGHT);
 		this.maxMsg.setHorizontalAlignment(JLabel.RIGHT);
 		this.inputMsg.setHorizontalAlignment(JLabel.RIGHT);
@@ -403,24 +438,22 @@ public class JNumberDialog extends JDialog
 		this.success = false;
 		this.inputField.setText("");
 		this.diffField.setText("0");
+		this.minField.setText(Integer.toString(minInt));
+		this.maxField.setText(Integer.toString(maxInt));
+		this.setResizable(true);
+		this.setModal(true);
 		this.pack();
+		this.setLocationRelativeTo(_parentComponent);
 
 		this.setVisible(true);
-		this.setModalExclusionType(ModalExclusionType.NO_EXCLUDE);
-		this.setModal(true);
-		while (this.isVisible())
-		{
-			try
-			{
-				Thread.sleep(200);
-			} catch (Exception e)
-			{
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
+		this.inputField.requestFocus();
 
 		return success;
+	}
+
+	public void setParentComponent(Component _parentComponent)
+	{
+		this._parentComponent = _parentComponent;
 	}
 
 	private void updateValues()
